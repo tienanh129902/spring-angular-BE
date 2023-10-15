@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/spring_angular
+    username: root
+    password: 120999
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+custom-message:
+  bad-request-message: Bad request
+  forbidden-message: Forbidden
+  unauthorized-message: Unauthorized
+  bad-credentials-message: Bad credentials
