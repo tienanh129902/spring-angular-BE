@@ -1,8 +1,8 @@
 package com.example.springbootAngular.service.impl;
 
-import com.example.springbootAngular.dto.UserLoginDTO;
-import com.example.springbootAngular.dto.UserRegisterDTO;
-import com.example.springbootAngular.exceptionHandler.CustomBadRequestException;
+import com.example.springbootAngular.dto.user.UserLoginDTO;
+import com.example.springbootAngular.dto.user.UserRegisterDTO;
+import com.example.springbootAngular.exception.CustomBadRequestException;
 import com.example.springbootAngular.model.User;
 import com.example.springbootAngular.repository.UserRepository;
 import com.example.springbootAngular.security.JwtProvider;
@@ -10,14 +10,14 @@ import com.example.springbootAngular.service.AuthService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -45,15 +45,26 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public void signup(UserRegisterDTO dto) {
-        dto.setPassword(encodePassword(dto.getPassword()));
-        User user = modelMapper.map(dto, User.class);
-        userRepository.save(user);
+        try {
+            dto.setPassword(encodePassword(dto.getPassword()));
+            User user = modelMapper.map(dto, User.class);
+            userRepository.save(user);
+        } catch (DataIntegrityViolationException dataEx) {
+            if (dataEx.getMessage() != null && dataEx.getMessage().contains("user_username_index")) {
+                throw new CustomBadRequestException("Duplicate username");
+            } else {
+                throw new CustomBadRequestException(dataEx.getMessage());
+            }
+        } catch (Exception ex) {
+            throw new CustomBadRequestException(ex.getMessage());
+        }
     }
 
     @Override
     public String login(UserLoginDTO dto) {
-        User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(() ->
+        User user = userRepository.findByUsernameAndActive(dto.getUsername(), true).orElseThrow(() ->
                 new CustomBadRequestException(badCredentialMessage));
 
         if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {

@@ -1,4 +1,4 @@
-package com.example.springbootAngular.exceptionHandler;
+package com.example.springbootAngular.exception;
 import com.example.springbootAngular.dto.ErrorMessageDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

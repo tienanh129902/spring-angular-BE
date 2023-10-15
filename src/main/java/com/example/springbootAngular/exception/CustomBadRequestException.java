@@ -1,4 +1,4 @@
-package com.example.springbootAngular.exceptionHandler;
+package com.example.springbootAngular.exception;
 
 public class CustomBadRequestException extends RuntimeException {
     public CustomBadRequestException(String message) {

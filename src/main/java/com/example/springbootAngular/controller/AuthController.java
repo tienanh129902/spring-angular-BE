@@ -1,8 +1,8 @@
 package com.example.springbootAngular.controller;
 
 import com.example.springbootAngular.dto.AccessTokenDTO;
-import com.example.springbootAngular.dto.UserLoginDTO;
-import com.example.springbootAngular.dto.UserRegisterDTO;
+import com.example.springbootAngular.dto.user.UserLoginDTO;
+import com.example.springbootAngular.dto.user.UserRegisterDTO;
 import com.example.springbootAngular.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

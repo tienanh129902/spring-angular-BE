@@ -1,4 +1,4 @@
-package com.example.springbootAngular.dto;
+package com.example.springbootAngular.dto.user;
 
 import lombok.Data;
 
