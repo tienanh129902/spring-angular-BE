@@ -1,10 +1,9 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/spring_angular
-    username: mam
-    password: 120999
+    username: your_username
+    password: your_password
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,3 +14,6 @@ custom-message:
   forbidden-message: Forbidden
   unauthorized-message: Unauthorized
   bad-credentials-message: Bad credentials
+
+application:
+  app-host: your_app_host

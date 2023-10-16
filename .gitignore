@@ -34,3 +34,6 @@ build/
 
 ### docker
 docker-compose-dev.yml
+
+## config
+src/main/resources/application.yml
