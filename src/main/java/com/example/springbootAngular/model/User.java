@@ -15,15 +15,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "username", unique = true)
     private String username;
 
-    @Column
+    @Column(name = "password")
     private String password;
 
-    @Column
+    @Column(name = "email")
     private String email;
 
-    @Column
+    @Column(name = "active")
     private Boolean active = true;
 }
