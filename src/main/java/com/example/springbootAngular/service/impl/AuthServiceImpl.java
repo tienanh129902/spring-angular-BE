@@ -1,5 +1,6 @@
 package com.example.springbootAngular.service.impl;
 
+import com.example.springbootAngular.dto.AccessTokenDTO;
 import com.example.springbootAngular.dto.user.UserLoginDTO;
 import com.example.springbootAngular.dto.user.UserRegisterDTO;
 import com.example.springbootAngular.exception.CustomBadRequestException;
@@ -63,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(UserLoginDTO dto) {
+    public AccessTokenDTO login(UserLoginDTO dto) {
         User user = userRepository.findByUsernameAndActive(dto.getUsername(), true).orElseThrow(() ->
                 new CustomBadRequestException(badCredentialMessage));
 
@@ -74,6 +75,6 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 dto.getUsername(), dto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtProvider.generateToken(authentication);
+        return new AccessTokenDTO(jwtProvider.generateToken(authentication), user.getUsername());
     }
 }
